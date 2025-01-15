@@ -34,9 +34,10 @@ public class AdminInterface {
 	
 	public void executarOp(int menuOp) {
 		switch (menuOp) {
-		case 1: 
+		case 1: Login loginAdmin = new Login();
+		loginAdmin.login();
 			break;
-		case 2: CadastrarAdmin cadastrarAdmin = new CadastrarAdmin(sc);
+		case 2: Cadastrar cadastrarAdmin = new Cadastrar(sc);
 		cadastrarAdmin.cadastrarAdmin();
 			break;
 		}

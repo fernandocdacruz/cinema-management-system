@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import db.DB;
 import db.DbException;
@@ -41,6 +43,34 @@ public class AdminDaoJDBC implements AdminDao {
 		} finally {
 			DB.closeStatement(st);
 		}
+	}
+
+	@Override
+	public List<Admin> findAll() {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		try {
+			st = conn.prepareStatement("SELECT * FROM admins_cadastrados");
+			rs = st.executeQuery();
+			List<Admin> adminsList = new ArrayList<>();
+			while (rs.next()) {
+				adminsList.add(instanciarAdmin(rs));
+			}
+		return adminsList;	
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
+		
+	}
+	
+	private Admin instanciarAdmin(ResultSet rs) throws SQLException {
+		Admin obj = new Admin();
+		obj.setLogin(rs.getString("login"));
+		obj.setSenha(rs.getString("senha"));
+		return obj;
 	}
 
 }
