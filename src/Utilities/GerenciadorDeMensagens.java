@@ -9,5 +9,7 @@ public class GerenciadorDeMensagens {
     public static final String LISTA_ADMINS_VAZIA = "\nNão há nenhum usuário cadastrado.";
     public static final String INPUT_VAZIO = "\nEsse input não é permitido ficar em branco. Tente novamente.";
     public static final String LOGIN_EM_USO = "\nEsse login já esta em uso. Tente outro.";
+    public static final String LOGIN_PROMPT = "\nLogin: ";
+    public static final String SENHA_PROMPT = "Senha: ";
     
 }

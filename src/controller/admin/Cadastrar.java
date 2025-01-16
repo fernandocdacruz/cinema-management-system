@@ -15,29 +15,34 @@ public class Cadastrar {
 	public Cadastrar(Scanner sc) {
 		this.sc = sc;
 	}
-	
+
 	public void cadastrarAdmin() {
 		AdminDao adminDao = DaoFactory.createAdminDao();
 		System.out.println("\nCadastrar novo Administrador.");
 		String login = loginCadastro(adminDao);
-		System.out.print("Senha: ");
-		String senha = sc.next();
+		String senha = senhaCadastro();
 		Admin admin = new Admin(login, senha);
 		adminDao.insert(admin);
 	}
-	
+
 	public String loginCadastro(AdminDao adminDao) {
 		List<Admin> adminsList = adminDao.findAll();
 		String login = "";
 		boolean inputValido = false;
+		boolean stringVazia = false;
+		System.out.print(GerenciadorDeMensagens.LOGIN_PROMPT);
+		sc.nextLine();
 		while (!inputValido) {
 			try {
-				System.out.print("\nLogin: ");
-				sc.nextLine();
+				if (stringVazia == true) {
+					System.out.print(GerenciadorDeMensagens.LOGIN_PROMPT);
+				}
 				String testeLogin = sc.nextLine();
-				testarStringVazia(testeLogin);
+				stringVazia = testarStringVazia(testeLogin);
+				InputVazioExcpetion(stringVazia);
 				if (adminsList.stream().anyMatch(ad -> ad.getLogin().equals(testeLogin))) {
 					System.out.println(GerenciadorDeMensagens.LOGIN_EM_USO);
+					System.out.print(GerenciadorDeMensagens.LOGIN_PROMPT);
 				} else {
 					login = testeLogin;
 					inputValido = true;
@@ -45,15 +50,44 @@ public class Cadastrar {
 			} catch (IllegalArgumentException e) {
 				System.out.println(e.getMessage());
 			}
-			
+
 		}
 		return login;
 	}
 	
-	public void testarStringVazia(String login) {
+	public String senhaCadastro() {
+		String senha = "";
+		boolean inputValido = false;
+		boolean stringVazia = false;
+		System.out.print(GerenciadorDeMensagens.SENHA_PROMPT);
+		while (!inputValido) {
+			try {
+				if (stringVazia == true) {
+					System.out.print("\n" + GerenciadorDeMensagens.SENHA_PROMPT);
+				}
+				senha = sc.nextLine();
+				stringVazia = testarStringVazia(senha);
+				InputVazioExcpetion(stringVazia);
+				inputValido = true;
+			} catch (IllegalArgumentException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		return senha;
+	}
+
+	public boolean testarStringVazia(String login) {
+		boolean stringVazia = false;
 		if (login.isBlank()) {
+			stringVazia = true;
+		}
+		return stringVazia;
+	}
+	
+	public void InputVazioExcpetion(boolean stringVazia) {
+		if (stringVazia) {
 			throw new IllegalArgumentException(GerenciadorDeMensagens.INPUT_VAZIO);
 		}
 	}
-	
+
 }
