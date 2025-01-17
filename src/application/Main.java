@@ -39,6 +39,8 @@ public class Main {
 		case 1: AdminInterface admin = AdminFactory.createAdminLogin(sc, validarMenuOp);
 				admin.loginInterface();
 			break;
+		case 2: System.out.println("\nÁREA EM MANUTENÇÃO!");
+			break;
 		}
 	}
 
